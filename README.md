@@ -1,24 +1,43 @@
-# azure-terraform
- 
+# AKS Deployment with Terraform
+
+This project contains Terraform configurations for deploying an Azure Kubernetes Service (AKS) cluster.
+
+## Prerequisites
+
+Before you begin, ensure you have the following tools installed:
+
+- [Terraform](https://developer.hashicorp.com/terraform/downloads) (>= v1.0.0)
+- [Azure CLI](https://learn.microsoft.com/en-us/cli/azure/install-azure-cli)
+- Proper permissions to create resources in your Azure subscription.
+
+Additionally, make sure you have configured your Azure credentials for Terraform to use. You can use the following command to log in and set the subscription:
 
 ```bash
-# Get Azure Resource Group Name
-resource_group_name=$(terraform output -raw resource_group_name)
+az login
+az account set --subscription "<your_subscription_id>"
 ```
+
+## Deployment Steps
+
+Follow the steps to deploy the AKS cluster
+
+### Navigate to the AKS infra directory
 ```bash
-# List Clusters
-az aks list --resource-group $resource_group_name --query "[].{\"K8s cluster name\":name}" --output table
+cd infra/aks
 ```
+### Initilize the Terraform code with backend configuration
 ```bash
-# Get Kubeconfig data
-echo "$(terraform output kube_config)" > ./azurek8s
+terraform init --backend-config="storage_account_name=techiescampbackendsa" --backend-config="container_name=tfstate" --backend-config="key=dev/aks.tfstate"
 ```
-> If you see << EOT at the beginning and EOT at the end, remove these characters from the file. Otherwise, you may receive the following error message: error: error loading config file "./azurek8s": yaml: line 2: mapping values are not allowed in this context
+### Review the Terraform plan
 ```bash
-# Export Kubeconfig data
-export KUBECONFIG=./azurek8s
+terraform plan --var-file=../../vars/dev/aks.tfvars
 ```
+### Apply the Terraform configuration
 ```bash
-# Check the cluters access
-kubectl get no
+terraform apply --var-file=../../vars/dev/aks.tfvars --auto-approve
+```
+### Destroy the infrastructure
+```bash
+terraform destroy --var-file=../../vars/dev/aks.tfvars --auto-approve
 ```
