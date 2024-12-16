@@ -253,6 +253,6 @@ variable "route_name" {
 # # SSH
 # variable "resource_group_id" {
 #   description = ""
-#   type = string
+#   type        = string
 # }
 

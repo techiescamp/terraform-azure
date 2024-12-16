@@ -8,23 +8,23 @@ module "resource_group" {
   managed_by              = var.managed_by
 }
 
-# # Virtual Network
-# module "virtual_network" {
-#   source = "../../modules/vnet"
+# Virtual Network
+module "virtual_network" {
+  source = "../../modules/vnet"
 
-#   resource_group_name = var.resource_group_name
-#   vnetwork_name       = var.vnetwork_name
-#   location            = var.location
-#   vnet_address_space  = var.vnet_address_space
-#   tags                = var.tags
-#   subnet_prefix       = var.subnet_prefix
-#   subnet_names        = var.subnet_names
-#   nsg_name            = var.nsg_name
-#   route_table_name    = var.route_table_name
-#   route_name          = var.route_name
+  resource_group_name = var.resource_group_name
+  vnetwork_name       = var.vnetwork_name
+  location            = var.location
+  vnet_address_space  = var.vnet_address_space
+  tags                = var.tags
+  subnet_prefix       = var.subnet_prefix
+  subnet_names        = var.subnet_names
+  nsg_name            = var.nsg_name
+  route_table_name    = var.route_table_name
+  route_name          = var.route_name
 
-#   depends_on = [module.resource_group]
-# }
+  depends_on = [module.resource_group]
+}
 
 # # Azure Kubernetes Cluster
 # module "kubernetes_cluster" {
